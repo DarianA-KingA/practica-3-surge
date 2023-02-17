@@ -1,18 +1,16 @@
-name: demosite
-on:
-  push:
-    branches: [ main ]
+name: Deploy Website
+
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    name: Deploy to surge
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Installing node
-      uses: actions/setup-node@v2-beta
-      with: 
-        node-version: 12
-    - name: Installing Surge
-      run: npm install --global surge
-    - name: deploying using surge
-      run: surge ./ https://darian.surge.sh  ${{ secrets.SURGE_LOGIN }}--token ${{ secrets.SURGE_TOKEN }}
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install -g surge
+      - run: surge . ${{ secrets.SURGE_LOGIN }} --token ${{ secrets.SURGE_TOKEN }}
